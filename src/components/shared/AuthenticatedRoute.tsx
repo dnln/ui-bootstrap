@@ -13,11 +13,17 @@ const GET_USER = gql`
 `;
 
 export const AuthenticatedRoute = ({ component: Component, ...rest }: any) => {
-  const { data } = useQuery(GET_USER);
+  const { data, loading } = useQuery(GET_USER);
+
+  if (loading) {
+    return <>Loading...</>;
+  }
 
   if (path(["user", "name"], data)) {
+    console.log(data);
     return <Route {...rest} render={props => <Component {...props} />} />;
   } else {
+    console.log("ere");
     return <Route {...rest} render={() => <Redirect to="/sign-in" />} />;
   }
 };
